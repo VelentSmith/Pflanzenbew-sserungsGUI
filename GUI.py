@@ -220,11 +220,11 @@ def render_overview():
             with c1:
                 if st.button("Details öffnen", key=f"open_{m['id']}", use_container_width=True):
                     st.session_state.selected_module_id = m["id"]
-                    st.experimental_rerun()
+                    st.rerun()
             with c2:
                 if st.button("Modul entfernen", key=f"rm_{m['id']}", use_container_width=True):
                     remove_module(db, m["id"])
-                    st.experimental_rerun()
+                    st.rerun()
         idx += 1
 
 # ---------- Ansicht: Modul-Details ----------
@@ -259,7 +259,7 @@ def render_module_details():
                 module["updated_at"] = now_iso()
                 add_log(module, "Modulparameter aktualisiert")
                 save_db(db)
-                st.experimental_rerun()
+                st.rerun()
 
     st.markdown("---")
     st.subheader("Pflanzen")
@@ -272,7 +272,7 @@ def render_module_details():
             if pname.strip():
                 add_plant(module, pname.strip())
                 save_db(db)
-                st.experimental_rerun()
+                st.rerun()
 
     if not module["plants"]:
         st.info("Keine Pflanzen konfiguriert.")
@@ -336,19 +336,19 @@ def render_module_details():
                     module["updated_at"] = now_iso()
                     add_log(module, f"Pflanze aktualisiert: {p['name']}")
                     save_db(db)
-                    st.experimental_rerun()
+                    st.rerun()
             with cH:
                 if st.button("Manuell giessen", key=f"man_{module['id']}_{p['id']}", use_container_width=True):
                     manual_water(module, p, simulate_ml=p["amount_ml"])
                     save_db(db)
-                    st.experimental_rerun()
+                    st.rerun()
             with cI:
                 st.metric("Würde jetzt giessen?", "Ja" if would_water_now else "Nein")
             with cJ:
                 if st.button("Pflanze entfernen", key=f"del_{module['id']}_{p['id']}", use_container_width=True):
                     remove_plant(module, p["id"])
                     save_db(db)
-                    st.experimental_rerun()
+                    st.rerun()
 
     st.markdown("---")
     st.subheader("Logs")
